@@ -23,7 +23,7 @@ const FaceTracking = () => {
 
   return (
     <React.Fragment>
-      {/* <button
+      <button
         onClick={() => {
           if (enable) {
             stopAR();
@@ -35,7 +35,7 @@ const FaceTracking = () => {
         }}
       >
         {enable ? 'Stop' : 'Start'}
-      </button> */}
+      </button>
       <Scene
         mindARFace={{
           autoStart: false,
