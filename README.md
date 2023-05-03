@@ -1,1 +1,0 @@
-# mindar-face-filter-webapp
