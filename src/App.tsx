@@ -1,13 +1,16 @@
 import React from 'react';
 import FaceTracking from './containers/FaceTracking';
+import Controls from './containers/Controls';
+
+import './App.css';
+import Layout from './containers/Layout';
 
 function App() {
   return (
-    <div className="App">
-      <div className="container">
-        <FaceTracking />
-      </div>
-    </div>
+    <Layout>
+      <Controls />
+      <FaceTracking />
+    </Layout>
   );
 }
 

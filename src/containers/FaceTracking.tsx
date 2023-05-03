@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Scene as AScene } from 'aframe';
 import {
   Camera,
@@ -14,28 +14,25 @@ import Scene from '../components/Scene';
 import 'mind-ar-ts/dist/mindar-face.prod.js';
 import 'mind-ar-ts/dist/mindar-face-aframe.prod.js';
 import Faces from '../components/Faces';
+import useStore from '../store/store';
 
 const FaceTracking = () => {
-  const [enable, setEnable] = useState<boolean>(false);
+  // const [enable, setEnable] = useState<boolean>(false);
+  const enabled = useStore((state) => state.enabled);
+  const mountSceneRef = useStore((state) => state.mountSceneRef);
+
   const sceneRef = React.useRef<AScene>();
 
-  const { startAR, stopAR } = useARManager(sceneRef);
+  useEffect(() => {
+    if (sceneRef.current) {
+      console.log('here');
+      mountSceneRef(sceneRef);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sceneRef.current]);
 
   return (
-    <React.Fragment>
-      <button
-        onClick={() => {
-          if (enable) {
-            stopAR();
-          } else {
-            startAR();
-          }
-
-          setEnable((prev) => !prev);
-        }}
-      >
-        {enable ? 'Stop' : 'Start'}
-      </button>
+    <div className="absolute h-screen w-screen overflow-hidden scale-x-[-1] z-10 top-0 left-0 right-0 bottom-0">
       <Scene
         mindARFace={{
           autoStart: false,
@@ -45,7 +42,7 @@ const FaceTracking = () => {
         renderer="colorManagement: true, physicallyCorrectLights"
         orientationUI={false}
         vrModeUI={false}
-        stats={enable}
+        // stats
         ref={sceneRef}
       >
         <Camera
@@ -54,18 +51,15 @@ const FaceTracking = () => {
           active={false}
         />
         <Assets>
-          <AItem
-            id="glasses"
-            src="https://raw.githubusercontent.com/hiukim/mind-ar-js/master/examples/face-tracking/assets/glasses/scene.gltf"
-          />
+          <AItem id="glasses" src={''} />
         </Assets>
-        <Entity visible={enable}>
+        <Entity visible={enabled}>
           <Faces anchorIndex={168}>
             <GLTFModel src="#glasses" scale={'0.01 0.01 0.01'} />
           </Faces>
         </Entity>
       </Scene>
-    </React.Fragment>
+    </div>
   );
 };
 
