@@ -5,14 +5,14 @@ import {
 } from 'react-icons/bs';
 import useStore from '../store/store';
 
-const mocks = Array(10).fill({});
-
 const Controls = () => {
   const sceneRef = useStore((state) => state.sceneRef);
   const enabled = useStore((state) => state.enabled);
   const setEnabled = useStore((state) => state.setEnabled);
-
-  console.log(enabled);
+  const filterSeleted = useStore((state) => state.filterSelected);
+  const clearFilter = useStore((state) => state.clearFilter);
+  const filterData = useStore((state) => state.filterData);
+  const changeFilter = useStore((state) => state.changeFilter);
 
   const startAR = () => {
     if (!sceneRef.current) return;
@@ -30,10 +30,15 @@ const Controls = () => {
     if (enabled) {
       stopAR();
       setEnabled(false);
+      clearFilter();
     } else {
       startAR();
       setEnabled(true);
     }
+  };
+
+  const handleOnClickFilter = (index: number) => {
+    changeFilter(index);
   };
 
   useEffect(() => {
@@ -71,14 +76,17 @@ const Controls = () => {
       </span>
 
       <div className="filter-section absolute self-center md:static bottom-[65px] w-full md:self-start md:flex-1 overflow-auto scrollbar-hide md:flex-col flex gap-5">
-        {mocks.map((item, index) => (
+        {filterData.map((item, index) => (
           <div
             key={index}
-            className={`w-[70px] md:w-[100px] aspect-square rounded-full md:rounded-xl overflow-hidden shrink-0 grow-0 cursor-pointer`}
+            onClick={() => handleOnClickFilter(index)}
+            className={`shadow-md w-[70px] md:w-[90px] aspect-square rounded-full md:rounded-xl overflow-hidden shrink-0 grow-0 cursor-pointer border-solid border-4 ${
+              filterSeleted == index ? 'border-orange-400' : 'border-gray-200'
+            }`}
           >
             <img
               className="w-full h-full object-cover"
-              src="https://img1.cgtrader.com/items/1952475/da6c6cb8bc/large/glasses-3d-model-max-obj-mtl-3ds-fbx-c4d-skp.jpg"
+              src={item.thumb}
               alt=""
             />
           </div>
@@ -90,7 +98,7 @@ const Controls = () => {
           onClick={handleOnEnabledChange}
           className={`w-[50px] md:w-[60px] aspect-square ${
             enabled ? 'bg-green-400' : 'bg-red-500'
-          }  flex items-center justify-center rounded-full cursor-pointer`}
+          }  flex items-center justify-center rounded-full cursor-pointer shadow-lg`}
         >
           {enabled ? (
             <BsFillCameraVideoFill size={20} color="#FFF" />

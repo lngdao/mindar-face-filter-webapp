@@ -6,8 +6,8 @@ const generateDefaultProps = (
 ) => {
   if (mindARDefault?.autoStart === undefined) mindARDefault.autoStart = true;
   if (mindARDefault?.uiLoading === undefined) mindARDefault.uiLoading = 'yes';
-  if (mindARDefault?.uiScanning === undefined) mindARDefault.uiScanning = 'yes';
-  if (mindARDefault?.uiError === undefined) mindARDefault.uiError = 'yes';
+  if (mindARDefault?.uiScanning === undefined) mindARDefault.uiScanning = 'no';
+  if (mindARDefault?.uiError === undefined) mindARDefault.uiError = 'no';
   if (mindARDefault?.filterMinCF === undefined) mindARDefault.filterMinCF = -1;
   if (mindARDefault?.filterBeta === undefined) mindARDefault.filterBeta = -1;
   if (mindARDefault?.shouldFaceUser === undefined)
