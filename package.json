@@ -4,6 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "npx gh-pages -d dist",
     "dev": "vite",
     "dev:expose": "vite --host",
     "build": "tsc && vite build",
@@ -11,16 +13,15 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@splinetool/react-spline": "^2.2.6",
-    "@splinetool/runtime": "^0.9.324",
     "aframe": "^1.4.2",
     "aframe-react-component": "^0.1.1",
+    "gh-pages": "^5.0.0",
     "mind-ar-ts": "^0.5.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.8.0",
-    "zustand": "^4.3.7",
-    "webgi": "https://dist.pixotronics.com/webgi/runtime/bundle-0.7.6.tgz"
+    "webgi": "https://dist.pixotronics.com/webgi/runtime/bundle-0.7.6.tgz",
+    "zustand": "^4.3.7"
   },
   "devDependencies": {
     "@types/aframe": "^1.2.2",
@@ -38,7 +39,6 @@
     "tailwindcss": "^3.3.2",
     "typescript": "^5.0.2",
     "vite": "^4.3.2",
-    "vite-plugin-require": "^1.1.10",
     "@types/webgi": "https://dist.pixotronics.com/webgi/runtime/bundle-types-0.7.6.tgz"
   }
 }

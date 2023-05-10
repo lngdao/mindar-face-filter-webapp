@@ -1,10 +1,4 @@
-import React, {
-  useRef,
-  useState,
-  useCallback,
-  useEffect,
-  LegacyRef,
-} from 'react';
+import React, { useRef, useCallback, useEffect, LegacyRef, memo } from 'react';
 import {
   ViewerApp,
   AssetManagerPlugin,
@@ -17,10 +11,11 @@ import {
   SSRPlugin,
   BloomPlugin,
   SSAOPlugin,
-  AssetImporter,
 } from 'webgi';
+import useStore from '../store/store';
 
-const WebGiViewer = () => {
+const WebGiViewerComponent = () => {
+  const enabled = useStore((state) => state.enabled);
   const canvasRef = useRef<HTMLCanvasElement | undefined>(undefined);
 
   const setupViewer = useCallback(async () => {
@@ -30,7 +25,6 @@ const WebGiViewer = () => {
       useRgbm: true,
     });
 
-    // Add some plugins
     const manager = await viewer.addPlugin(
       AssetManagerPlugin,
       undefined,
@@ -38,7 +32,6 @@ const WebGiViewer = () => {
       { storage: caches ? await caches.open('webgi-cache-storage') : undefined }
     );
 
-    // Add plugins individually.
     await viewer.addPlugin(GBufferPlugin);
     await viewer.addPlugin(new ProgressivePlugin(32));
     await viewer.addPlugin(new TonemapPlugin(!viewer.useRgbm));
@@ -105,17 +98,21 @@ const WebGiViewer = () => {
   }, []);
 
   return (
-    <div className="w-screen h-screen fixed bg-transparent">
+    <div
+      className="w-screen h-screen fixed bg-transparent"
+      style={{ display: enabled ? 'none' : 'block' }}
+    >
       <div className="w-full h-full fixed z-[-1] flex justify-center items-center">
         <div className="circle-left rounded-full" />
         <div className="circle-right rounded-full" />
       </div>
       <canvas
-        className="w-full h-full bg-transparent fixed z-5"
+        className="w-full h-full bg-transparent fixed zƒ-5"
         ref={canvasRef as LegacyRef<HTMLCanvasElement>}
       />
     </div>
   );
 };
 
+const WebGiViewer = memo(WebGiViewerComponent);
 export default WebGiViewer;
